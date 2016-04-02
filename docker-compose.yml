@@ -1,0 +1,4 @@
+live:
+  extends:
+    file: docker-compose.prod.yml
+    service: live

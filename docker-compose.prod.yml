@@ -1,0 +1,9 @@
+live:
+  image: akg-live:latest
+  volumes:
+    - ./src:/src
+    - ./conf/supervisor:/etc/supervisor/conf.d
+    - ./conf/nginx:/etc/nginx
+  ports:
+    - 1337:1337
+    - 80:80

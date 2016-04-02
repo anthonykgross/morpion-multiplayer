@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <div id="menu">
+                <div id="pan-left">
+                    <input type="text" placeholder="Your name" />
+                    <button>Play</button>
+                </div>
+                <div id="pan-right"></div>
+            </div>
+            <div id="grid"></div>
+            <ul id="log">
+                
+            </ul>
+        </div>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script src="node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
+        <script type="text/javascript">
+            
+            
+            var Controller = function Controller(elm, socket){
+                this.elm                = elm;
+                this.socket             = socket;
+                
+                this.draw = function(rows){
+                    this.elm.html("");
+                    // Lines
+                    for(var i in rows){
+                        // Rows 
+                        var row = rows[i];
+                        for(var j = 0; j < row.length; j++){
+                            var cell = row[j];
+                            this.drawCell(cell, i, j);
+                        }
+                    }
+                };
+                
+                this.drawCell = function(cell, i, j){
+                    var elm_cell        = $("<div/>").attr('data-row', i).attr('data-col', j).addClass('cell');
+                    var icn_cross       = $('<i/>').addClass("fa fa-times");
+                    var icn_circle      = $('<i/>').addClass("fa fa-circle-o");
+                    
+                    if(cell.value===0){
+                        elm_cell.html("&nbsp;");
+                    }
+                    if(cell.value===-1){
+                        elm_cell.addClass("cross").append(icn_cross);
+                    }
+                    if(cell.value===1){
+                        elm_cell.addClass("circle").append(icn_circle);
+                    }
+                    this.elm.append(elm_cell);
+                    
+                    $this = this;
+                    if(cell.value===0){
+                        elm_cell.on("click", function(){
+                            var col = $(this).attr("data-col");
+                            var row = $(this).attr("data-row");
+
+                            $this.socket.emit("play", {"row":row,"col":col});
+                        });
+                    }
+                };
+            };
+            
+            $(function(){
+                var socket  = io.connect("127.0.0.1:1337");
+                var c       = new Controller($('#grid'), socket);
+                
+                $("#pan-left button").on("click", function(){
+                    $("#pan-left").html($("#pan-left input").val());
+                    socket.emit('ready', {"name" : $("#pan-left").html() });
+                });
+                
+                socket.on('game-ready', function(d){
+                    $("#pan-right").html(d.name);
+                });
+                socket.on('log', function(d){
+                    $("#log").prepend(d.msg);
+                });
+                socket.on('refresh-grid', function(d){
+                    c.draw(d);
+                });
+                socket.on('win', function(d){
+                    alert("And the winner is ... "+d);
+                });
+            });
+        </script>
+    </body>
+</html>

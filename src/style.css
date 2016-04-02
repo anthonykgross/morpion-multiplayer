@@ -1,0 +1,59 @@
+body{
+    background-color: cornflowerblue;
+}    
+.container{
+    margin: auto;
+    width: 50%;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #FFF;
+}
+#menu div {
+    float: left;
+    width: 45%;
+    padding: 10px;
+    font-weight: bold;
+}
+#menu div#pan-right{
+    text-align: right;
+    color: red;
+}
+#menu div#pan-left{
+    color: blue;
+}
+#grid{
+    margin: auto;
+    width: 465px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: #EEE;
+}
+#grid .cell{
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px;
+    height: 140px;
+    width: 140px;
+    font-size: 130px;
+    text-align: center;
+    background-color: white;
+    cursor: pointer;
+}
+#grid .cell:hover{
+    background-color: #CCC;
+    border: 1px solid #333;
+}
+#grid .cell.cross{
+    color:red;
+}
+#grid .cell.circle{
+    color:green;
+}
+#grid .cell.circle:hover, #grid .cell.cross:hover{
+    background-color: white;
+    border: 1px solid black;
+    cursor: auto;
+}

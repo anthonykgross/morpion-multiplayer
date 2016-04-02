@@ -1,0 +1,14 @@
+/src/nbproject
+/src/web/bundles/
+/src/app/bootstrap*
+/src/app/cache/*
+/src/app/logs/*
+/src/vendor/
+/src/node_modules/
+/src/web/css/
+/src/web/libs/
+/src/web/sprite/
+/src/bin/
+/src/app/SymfonyRequirements.php
+/logs/*.log
+/nbproject
